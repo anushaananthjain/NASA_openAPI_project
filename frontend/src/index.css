@@ -1,0 +1,588 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center; 
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #1a202c; 
+}
+
+/* Header.jsx */
+.header-container {
+  width: 100%;
+  max-width: 896px; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.header-title {
+  font-size: 2.25rem; 
+  font-weight: 800; 
+  margin-bottom: 1rem; 
+  background: linear-gradient(to right, #a78bfa, #ec4899); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent; 
+}
+
+.header-subtitle {
+  font-size: 1.125rem; 
+  color: #d1d5db; 
+}
+
+@media (min-width: 640px) { 
+  .header-title {
+    font-size: 3rem; 
+  }
+  .header-subtitle {
+    font-size: 1.25rem; 
+  }
+}
+
+/* DatePicker.jsx */
+.date-picker-section {
+  width: 100%; 
+  max-width: 28rem; 
+  margin-left: auto;   
+  margin-right: auto;  
+  margin-bottom: 2rem; 
+
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 1rem; 
+}
+
+@media (min-width: 640px) { 
+  .date-picker-section {
+    flex-direction: row; 
+    gap: 1rem; 
+  }
+}
+
+.date-picker-label {
+  font-size: 1.125rem; 
+  font-weight: 500; 
+  color: #d1d5db; 
+}
+
+.date-picker-input {
+  padding: 0.75rem; 
+  border-radius: 0.5rem; 
+  border: 1px solid #4b5563; 
+  background-color: #374151; 
+  color: #ffffff; 
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+  width: 100%; 
+}
+
+@media (min-width: 640px) { 
+  .date-picker-input {
+    width: auto; 
+  }
+}
+
+.date-picker-input:focus {
+  outline: none;
+  border-color: #3b82f6; 
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); 
+}
+
+/* ApodViewer.jsx */
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 16rem; 
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 50%;
+  height: 4rem; 
+  width: 4rem; 
+  border-top: 2px solid #a78bfa; 
+  border-bottom: 2px solid #a78bfa; 
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 1rem; 
+  font-size: 1.25rem; 
+  color: #9ca3af; 
+}
+
+.error-message-box {
+  background-color: #7f1d1d; 
+  padding: 1.5rem; 
+  border-radius: 0.5rem; 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); 
+  text-align: center;
+}
+
+.error-title {
+  color: #fca5a5; 
+  font-size: 1.125rem; 
+  font-weight: 600; 
+  margin-bottom: 0.5rem; 
+}
+
+.error-text {
+  color: #fecaca;
+}
+
+.error-hint {
+  color: #fecaca;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* APOD Viewer Content */
+.apod-viewer-content {
+  color: #fecaca;
+}
+
+
+.apod-title {
+  font-size: 1.875rem; 
+  font-weight: 700; 
+  text-align: center;
+  margin-bottom: 1rem; 
+  color: #93c5fd; 
+}
+
+@media (min-width: 640px) { 
+  .apod-title {
+    font-size: 2.25rem; 
+  }
+}
+
+.apod-date {
+  color: #9ca3af; 
+  font-size: 0.875rem; 
+  margin-bottom: 1.5rem; 
+  text-align: center;
+}
+
+.apod-media-explanation-container {
+  display: flex;
+  flex-direction: column; 
+  gap: 1.5rem; 
+}
+
+@media (min-width: 768px) { 
+  .apod-media-explanation-container {
+    flex-direction: row; 
+  }
+}
+
+.apod-media-section {
+  width: 100%; 
+}
+
+@media (min-width: 768px) { 
+  .apod-media-section {
+    width: 50%; 
+  }
+}
+
+.apod-image, .apod-video {
+  width: 100%; 
+  border-radius: 0.5rem; 
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); 
+  border: 2px solid #374151; 
+  object-fit: contain; 
+}
+
+.apod-video {
+  aspect-ratio: 16 / 9; 
+}
+
+.apod-explanation-section {
+  width: 100%; 
+  font-size: 1.125rem; 
+  line-height: 1.625; 
+  color: #e5e7eb; 
+  text-align: justify;
+}
+
+@media (min-width: 768px) { 
+  .apod-explanation-section {
+    width: 50%;
+  }
+}
+
+.explanation-heading {
+  font-weight: 600; 
+  margin-bottom: 0.5rem; 
+  color: #bfdbfe; 
+}
+
+.apod-copyright {
+  color: #6b7280; 
+  font-size: 0.875rem; 
+  margin-top: 1rem; 
+}
+
+/* Styles for Footer.jsx */
+.app-footer {
+  margin-top: 3rem; 
+  text-align: center;
+  color: #6b7280; 
+  font-size: 0.875rem; 
+}
+
+.app-container {
+  min-height: 100vh; 
+  background-color: #1a202c; 
+  color: #ffffff; 
+  font-family: 'Inter', sans-serif; 
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  padding-top: 2rem; 
+  padding-bottom: 2rem; 
+  padding-left: 1rem; 
+  padding-right: 1rem; 
+}
+
+@media (min-width: 640px) { 
+  .app-container {
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem; 
+  }
+}
+
+@media (min-width: 1024px) { 
+  .app-container {
+    padding-left: 2rem;
+    padding-right: 2rem; 
+  }
+}
+
+
+/* App.jsx*/
+.main-content-area {
+  width: 100%; 
+  max-width: 896px; 
+  background-color: #2d3748; 
+  border-radius: 0.75rem; 
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); 
+  padding: 1.5rem; 
+}
+
+@media (min-width: 640px) { 
+  .main-content-area {
+    padding: 2rem; 
+  }
+}
+
+/* HomePage.jsx */
+.home-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.home-page-title {
+  font-size: 2.5rem; 
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #93c5fd; 
+}
+
+.home-page-subtitle {
+  font-size: 1.25rem; 
+  color: #d1d5db; 
+  margin-bottom: 3rem; 
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column; 
+  gap: 1.5rem; 
+  width: 100%;
+  max-width: 20rem; 
+  margin-top: 1.5rem; 
+  align-items: center; 
+}
+
+@media (min-width: 640px) { 
+  .button-group {
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 1.5rem; 
+    max-width: 60rem; 
+  }
+}
+
+.home-button {
+  background-color: #4f46e5; 
+  color: white;
+  padding: 1.2rem 2rem; 
+  border: none;
+  border-radius: 0.75rem; 
+  font-size: 1.125rem; 
+  font-weight: 600; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; 
+  width: 100%; 
+  max-width: 18rem; 
+  text-align: center; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+@media (min-width: 640px) { 
+  .home-button {
+    width: auto; 
+    min-width: 10rem; 
+    flex-grow: 0; 
+  }
+}
+
+.home-button:hover {
+  background-color: #4338ca; 
+  transform: translateY(-3px); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+.home-button:active {
+  transform: translateY(0); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* SDOMLViewer.jsx  */
+
+.sdoml-viewer-content { 
+  color: #e5e7eb; 
+  padding: 1.5rem; 
+  text-align: center;
+  max-width: 896px; 
+  margin: 0 auto;
+}
+
+.sdoml-title { 
+  font-size: 2.25rem; 
+  font-weight: 700; 
+  color: #a78bfa; 
+  margin-bottom: 1.5rem;
+}
+
+.sdoml-intro { 
+  font-size: 1.125rem;
+  color: #d1d5db; 
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.sdoml-section { 
+  background-color: #374151; 
+  border-radius: 0.75rem;
+  padding: 1.5rem; 
+  margin-top: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.sdoml-section h3 {
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  color: #bfdbfe; 
+  margin-bottom: 1rem;
+}
+
+.sdoml-section p {
+  color: #d1d5db;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.sdoml-section ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+.sdoml-section li {
+  margin-bottom: 0.5rem;
+}
+
+.sdoml-links li, .sdoml-sub-links li {
+  list-style: none; 
+  margin-left: 0;
+}
+
+.sdoml-section a {
+  color: #6366f1; 
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.sdoml-section a:hover {
+  color: #818cf8;
+}
+
+.sdoml-sub-links {
+  list-style: none;
+  margin-left: 1rem; 
+  margin-top: 0.5rem;
+}
+
+.sdoml-outro { 
+  font-size: 1rem;
+  color: #9ca3af; 
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+
+.sdoml-viewer-content .home-button {
+  margin-top: 3rem; 
+}
+
+.ml-prediction-section {
+  text-align: center;
+}
+
+.prediction-results {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #2d3748; 
+  border-radius: 0.5rem;
+  border: 1px solid #4b5563; 
+  display: inline-block; 
+  text-align: left;
+}
+
+.prediction-results p {
+  margin-bottom: 0.5rem;
+  color: #d1d5db;
+}
+
+.prediction-results p:last-child {
+  margin-bottom: 0;
+}
+
+/* MLGraphsViewer.jsx */
+.ml-graphs-viewer-content {
+  color: #e5e7eb;
+  padding: 1.5rem;
+  text-align: center;
+  max-width: 1200px; 
+  margin: 0 auto;
+}
+
+.ml-graphs-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #93c5fd;
+  margin-bottom: 1.5rem;
+}
+
+.ml-graphs-intro {
+  font-size: 1.125rem;
+  color: #d1d5db;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.graph-cards-container {
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 2rem; 
+  justify-content: center; 
+}
+
+.graph-card {
+  background-color: #2d3748; 
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #4b5563;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.graph-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.graph-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #bfdbfe;
+  margin-bottom: 1rem;
+}
+
+.graph-image {
+  width: 100%;
+  height: auto;
+  max-height: 400px; 
+  object-fit: contain;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #6366f1; 
+}
+
+.graph-description {
+  font-size: 0.95rem;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+
+.ml-graphs-viewer-content .home-button {
+    margin-top: 3rem;
+}
+
+
+.coming-soon .home-button {
+  margin-top: 3rem; 
+}
