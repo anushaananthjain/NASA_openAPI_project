@@ -1,3 +1,4 @@
+/* Global styles from your Index.css (usually these are in a separate file, but included here for completeness) */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -73,7 +74,7 @@ body {
   width: 100%; 
   max-width: 28rem; 
   margin-left: auto;   
-  margin-right: auto;  
+  margin-right: auto;   
   margin-bottom: 2rem; 
 
   display: flex; 
@@ -319,9 +320,18 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding-top: 2rem; /* Keep existing top/bottom padding */
+  padding-bottom: 2rem;
+  padding-left: 1rem; /* Adjusted horizontal padding for smaller screens */
+  padding-right: 1rem; /* Adjusted horizontal padding for smaller screens */
   text-align: center;
   width: 100%;
+}
+
+@media (min-width: 640px) {
+  .home-page-container {
+    padding: 2rem; /* Revert to 2rem all around for larger screens */
+  }
 }
 
 .home-page-title {
@@ -392,7 +402,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* SDOMLViewer.jsx  */
+/* SDOMLViewer.jsx   */
 
 .sdoml-viewer-content { 
   color: #e5e7eb; 
@@ -584,5 +594,10 @@ body {
 
 
 .coming-soon .home-button {
+  margin-top: 3rem; 
+}
+
+/* NEOViewer.jsx */
+.neo-viewer-content .home-button {
   margin-top: 3rem; 
 }

@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 import HomePage from './components/HomePage';
 import NEOViewer from './components/NEOViewer';
 import MLPredictionViewer from './components/MLPredictionViewer';
-import MLGraphsViewer from './components/MLGraphsViewer'; 
+import MLGraphsViewer from './components/MLGraphsViewer';
 import './App.css';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   const [mlPredictionLoading, setMlPredictionLoading] = useState(false);
   const [mlPredictionError, setMlPredictionError] = useState(null);
 
-  const BACKEND_URL = 'http://localhost:5000'; 
+  const BACKEND_URL = 'http://localhost:5000';
   useEffect(() => {
     if (currentPage === 'apod') {
       const fetchApodData = async () => {
@@ -63,8 +63,8 @@ function App() {
             "end_minute": 41,
             "end_second": 48
           };
-          
-          
+
+
           const response = await axios.post(`${BACKEND_URL}/api/ml_predict`, sampleFeatures);
           setMlPredictionData(response.data);
         } catch (err) {
@@ -79,14 +79,15 @@ function App() {
       };
       fetchMLPrediction();
     }
-  }, [selectedDate, currentPage]); 
+  }, [selectedDate, currentPage]);
 
   const handleDateChange = (e) => setSelectedDate(e.target.value);
   const handleNavigate = (page) => setCurrentPage(page);
 
   return (
     <div className="app-container">
-      <Header />
+      {/* Conditionally render Header only if currentPage is 'apod' */}
+      {currentPage === 'apod' && <Header />}
       <main className="main-content-area">
         {currentPage === 'home' && (
           <HomePage onNavigate={handleNavigate} />
@@ -94,7 +95,8 @@ function App() {
         {currentPage === 'apod' && (
           <>
             <DatePicker selectedDate={selectedDate} handleDateChange={handleDateChange} />
-            <ApodViewer loading={apodLoading} error={apodError} apodData={apodData} />
+            {/* Pass onNavigate to ApodViewer */}
+            <ApodViewer loading={apodLoading} error={apodError} apodData={apodData} onNavigate={handleNavigate} />
           </>
         )}
         {currentPage === 'neows' && (

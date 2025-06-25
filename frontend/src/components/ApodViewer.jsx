@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ApodViewer = ({ loading, error, apodData }) => {
+const ApodViewer = ({ loading, error, apodData, onNavigate }) => { // Add onNavigate prop
   if (loading) {
     return (
       <div className="loading-container">
@@ -16,6 +16,9 @@ const ApodViewer = ({ loading, error, apodData }) => {
         <p className="error-title">Error!</p>
         <p className="error-text">{error}</p>
         <p className="error-hint">Please try selecting a different date or check your network connection!!!!!</p>
+        <button className="home-button" onClick={() => onNavigate('home')}> {/* Added button */}
+          Back to Home
+        </button>
       </div>
     );
   }
@@ -61,6 +64,9 @@ const ApodViewer = ({ loading, error, apodData }) => {
           )}
         </div>
       </div>
+      <button className="home-button" onClick={() => onNavigate('home')}> {/* Added button */}
+        Back to Home
+      </button>
     </div>
   );
 };

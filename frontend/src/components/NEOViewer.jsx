@@ -8,10 +8,10 @@ import {
   Title,
   Tooltip,
   Legend,
-  PointElement, 
-  LineElement,  
+  PointElement,
+  LineElement,
 } from 'chart.js';
-import { Bar, Scatter } from 'react-chartjs-2'; 
+import { Bar, Scatter } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -53,9 +53,9 @@ const NEOViewer = ({ onNavigate }) => {
       }
     };
     fetchNeoData();
-  }, [startDate, endDate]); 
+  }, [startDate, endDate]);
 
-  
+
   const prepareChartData = () => {
     if (!neoData || !neoData.near_earth_objects) return { hazardData: null, diameterScatterData: null };
 
@@ -63,7 +63,7 @@ const NEOViewer = ({ onNavigate }) => {
     let nonHazardousCount = 0;
     const diameterMissData = [];
 
-    
+
     const allNeos = Object.values(neoData.near_earth_objects).flat();
 
     allNeos.forEach(neo => {
@@ -73,28 +73,28 @@ const NEOViewer = ({ onNavigate }) => {
         nonHazardousCount++;
       }
 
-      
+
       if (neo.close_approach_data && neo.close_approach_data.length > 0) {
         const missDistanceKm = parseFloat(neo.close_approach_data[0].miss_distance.kilometers);
-        const estimatedDiameterM = neo.estimated_diameter.meters.estimated_diameter_max; 
+        const estimatedDiameterM = neo.estimated_diameter.meters.estimated_diameter_max;
         diameterMissData.push({
           x: estimatedDiameterM,
           y: missDistanceKm,
-          label: neo.name, 
-          isHazardous: neo.is_potentially_hazardous_asteroid 
+          label: neo.name,
+          isHazardous: neo.is_potentially_hazardous_asteroid
         });
       }
     });
 
-    
+
     const hazardData = {
       labels: ['Potentially Hazardous', 'Non-Hazardous'],
       datasets: [{
         label: 'Number of Objects',
         data: [hazardousCount, nonHazardousCount],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)', 
-          'rgba(75, 192, 192, 0.6)'  
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(75, 192, 192, 0.6)'
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -104,7 +104,7 @@ const NEOViewer = ({ onNavigate }) => {
       }]
     };
 
-    
+
     const diameterScatterData = {
         datasets: [
             {
@@ -135,13 +135,13 @@ const NEOViewer = ({ onNavigate }) => {
       legend: {
         position: 'top',
         labels: {
-            color: 'white' 
+            color: 'white'
         }
       },
       title: {
         display: true,
         text: 'Hazardous vs. Non-Hazardous NEOs',
-        color: '#d1d5db' 
+        color: '#d1d5db'
       },
       tooltip: {
         callbacks: {
@@ -161,18 +161,18 @@ const NEOViewer = ({ onNavigate }) => {
     scales: {
         x: {
             ticks: {
-                color: '#9ca3af' 
+                color: '#9ca3af'
             },
             grid: {
-                color: 'rgba(255,255,255,0.1)' 
+                color: 'rgba(255,255,255,0.1)'
             }
         },
         y: {
             ticks: {
-                color: '#9ca3af' 
+                color: '#9ca3af'
             },
             grid: {
-                color: 'rgba(255,255,255,0.1)' 
+                color: 'rgba(255,255,255,0.1)'
             }
         }
     }
@@ -251,7 +251,8 @@ const NEOViewer = ({ onNavigate }) => {
         <p className="error-title">Error!</p>
         <p className="error-text">{error}</p>
         <p className="error-hint">Please check your network connection or try again later.</p>
-        <button className="home-button" onClick={() => onNavigate('home')}>
+        {/* Added mt-8 class here for more space */}
+        <button className="home-button mt-8" onClick={() => onNavigate('home')}>
           Back to Home
         </button>
       </div>
@@ -282,7 +283,8 @@ const NEOViewer = ({ onNavigate }) => {
             className="date-picker-input"
           />
         </div>
-        <button className="home-button" onClick={() => onNavigate('home')}>
+        {/* Added mt-8 class here for more space */}
+        <button className="home-button mt-8" onClick={() => onNavigate('home')}>
           Back to Home
         </button>
       </div>
@@ -323,29 +325,10 @@ const NEOViewer = ({ onNavigate }) => {
         {diameterScatterData && <Scatter data={diameterScatterData} options={diameterScatterOptions} />}
       </div>
 
-      <div className="data-table-section">
-        <h3>Detailed NEO List</h3>
-        <div className="neo-list-grid">
-          {allNeos.map((neo) => (
-            <div key={neo.id} className="neo-item-card">
-              <h4>{neo.name}</h4>
-              <p><strong>Hazardous:</strong> {neo.is_potentially_hazardous_asteroid ? 'Yes' : 'No'}</p>
-              <p><strong>Abs. Mag:</strong> {neo.absolute_magnitude_h}</p>
-              {neo.close_approach_data && neo.close_approach_data.length > 0 && (
-                <div className="close-approach-summary">
-                  <p><strong>Approach Date:</strong> {neo.close_approach_data[0].close_approach_date}</p>
-                  <p><strong>Miss Distance:</strong> {parseFloat(neo.close_approach_data[0].miss_distance.kilometers).toFixed(0)} km</p>
-                  <p><strong>Velocity:</strong> {parseFloat(neo.close_approach_data[0].relative_velocity.kilometers_per_second).toFixed(2)} km/s</p>
-                </div>
-              )}
-              <p><strong>Est. Diameter:</strong> {parseFloat(neo.estimated_diameter.meters.estimated_diameter_min).toFixed(0)} - {parseFloat(neo.estimated_diameter.meters.estimated_diameter_max).toFixed(0)} m</p>
-              <a href={neo.nasa_jpl_url} target="_blank" rel="noopener noreferrer" className="jpl-link">More Info (JPL)</a>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* The "Detailed NEO List" section has been removed from here */}
 
-      <button className="home-button" onClick={() => onNavigate('home')}>
+      {/* Added mt-8 class here for more space */}
+      <button className="home-button mt-8" onClick={() => onNavigate('home')}>
         Back to Home
       </button>
     </div>
