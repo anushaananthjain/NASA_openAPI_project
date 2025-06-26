@@ -11,7 +11,7 @@ const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL || 'http://local
 
 
 app.use(cors({
-    origin: 'http://localhost:5173', 
+    origin: 'https://nasa-react-frontend.vercel.app', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
