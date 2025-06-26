@@ -24,11 +24,13 @@ function App() {
   const [mlPredictionError, setMlPredictionError] = useState(null);
 
   const BACKEND_URL = 'http://localhost:5000';
+
   useEffect(() => {
+    // Only fetch APOD data if the current page is 'apod'
     if (currentPage === 'apod') {
       const fetchApodData = async () => {
         setApodLoading(true);
-        setApodError(null);
+        setApodError(null); // Clear previous errors
 
         try {
           const response = await axios.get(`${BACKEND_URL}/api/apod?date=${selectedDate}`);
@@ -36,50 +38,59 @@ function App() {
         } catch (err) {
           console.error('Failed to fetch APOD data:', err);
           setApodError(
-            err.response?.data?.message ||
-            'An error occurred while fetching data. Please try again later.'
+            err.response?.data?.error || 'An error occurred while fetching APOD data. Please try again.'
           );
-          setApodData(null);
+          setApodData(null); // Clear data on error
         } finally {
           setApodLoading(false);
         }
       };
       fetchApodData();
+    } else {
+      // If not on APOD page, reset APOD state to avoid stale data/errors
+      setApodData(null);
+      setApodLoading(false);
+      setApodError(null);
     }
 
-    else if (currentPage === 'ml-prediction') {
+    // Only fetch ML Prediction data if the current page is 'ml-prediction'
+    // Note: The ML prediction API call has a POST method and specific body data.
+    // Ensure these parameters are appropriate for your backend.
+    if (currentPage === 'ml-prediction') {
       const fetchMLPrediction = async () => {
         setMlPredictionLoading(true);
-        setMlPredictionError(null);
+        setMlPredictionError(null); // Clear previous errors
         try {
-          const sampleFeatures = {
-            "total_counts": 50000,
-            "x_pos_asec": 100,
-            "y_pos_asec": -200,
-            "start_hour": 21,
-            "start_minute": 29,
-            "start_second": 56,
-            "end_hour": 21,
-            "end_minute": 41,
-            "end_second": 48
-          };
-
-
-          const response = await axios.post(`${BACKEND_URL}/api/ml_predict`, sampleFeatures);
+          const response = await axios.post(`${BACKEND_URL}/api/ml_predict`, {
+            total_counts: 50000,
+            x_pos_asec: 100,
+            y_pos_asec: -200,
+            start_hour: 21,
+            start_minute: 29,
+            start_second: 56,
+            end_hour: 21,
+            end_minute: 41,
+            end_second: 48
+          });
           setMlPredictionData(response.data);
         } catch (err) {
           console.error('Failed to fetch ML Prediction:', err);
           setMlPredictionError(
             err.response?.data?.error || 'Failed to fetch ML prediction data. Please check backend.'
           );
-          setMlPredictionData(null);
+          setMlPredictionData(null); // Clear data on error
         } finally {
           setMlPredictionLoading(false);
         }
       };
       fetchMLPrediction();
+    } else {
+      // If not on ML prediction page, reset ML state
+      setMlPredictionData(null);
+      setMlPredictionLoading(false);
+      setMlPredictionError(null);
     }
-  }, [selectedDate, currentPage]);
+  }, [currentPage, selectedDate]); // Keep selectedDate as a dependency for APOD's useEffect
 
   const handleDateChange = (e) => setSelectedDate(e.target.value);
   const handleNavigate = (page) => setCurrentPage(page);

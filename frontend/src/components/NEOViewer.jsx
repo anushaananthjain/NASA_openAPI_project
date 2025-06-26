@@ -131,104 +131,110 @@ const NEOViewer = ({ onNavigate }) => {
 
   const hazardOptions = {
     responsive: true,
+    maintainAspectRatio: false, // Add or ensure this is false
     plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-            color: 'white'
-        }
-      },
       title: {
         display: true,
-        text: 'Hazardous vs. Non-Hazardous NEOs',
-        color: '#d1d5db'
+        text: 'Hazardous Object Count by Date',
+        color: '#e5e7eb',
+        font: { size: 18 }
+      },
+      legend: {
+        labels: {
+          color: '#e5e7eb',
+        }
       },
       tooltip: {
         callbacks: {
           label: function(context) {
-            let label = context.dataset.label || '';
-            if (label) {
-                label += ': ';
-            }
-            if (context.parsed.y !== null) {
-                label += context.parsed.y;
-            }
-            return label;
-          }
-        }
-      }
-    },
-    scales: {
-        x: {
-            ticks: {
-                color: '#9ca3af'
-            },
-            grid: {
-                color: 'rgba(255,255,255,0.1)'
-            }
-        },
-        y: {
-            ticks: {
-                color: '#9ca3af'
-            },
-            grid: {
-                color: 'rgba(255,255,255,0.1)'
-            }
-        }
-    }
-  };
-
-  const diameterScatterOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-            color: 'white'
-        }
-      },
-      title: {
-        display: true,
-        text: 'Estimated Diameter vs. Miss Distance',
-        color: '#d1d5db'
-      },
-      tooltip: {
-        callbacks: {
-          label: function(context) {
-            const dataPoint = context.raw;
-            return `Name: ${dataPoint.label} | Diameter: ${dataPoint.x.toFixed(2)}m | Miss Distance: ${dataPoint.y.toFixed(2)}km`;
+            return `Count: ${context.parsed.y}`;
           }
         }
       }
     },
     scales: {
       x: {
-        type: 'linear',
-        position: 'bottom',
-        title: {
-          display: true,
-          text: 'Max Estimated Diameter (meters)',
-          color: '#d1d5db'
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
         },
         ticks: {
-            color: '#9ca3af'
+          color: '#d1d5db',
         },
-        grid: {
-            color: 'rgba(255,255,255,0.1)'
+        title: {
+          display: true,
+          text: 'Date',
+          color: '#93c5fd',
         }
       },
       y: {
-        type: 'linear',
-        title: {
-          display: true,
-          text: 'Miss Distance (km)',
-          color: '#d1d5db'
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
         },
         ticks: {
-            color: '#9ca3af'
+          color: '#d1d5db',
+          stepSize: 1,
         },
+        title: {
+          display: true,
+          text: 'Number of Objects',
+          color: '#93c5fd',
+        }
+      }
+    }
+  };
+
+
+  const diameterScatterOptions = {
+    responsive: true,
+    maintainAspectRatio: false, // Add or ensure this is false
+    plugins: {
+      title: {
+        display: true,
+        text: 'Object Diameter vs. Closest Approach Distance',
+        color: '#e5e7eb',
+        font: { size: 18 }
+      },
+      legend: {
+        labels: {
+          color: '#e5e7eb',
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return `Diameter: ${context.parsed.x} km, Distance: ${context.parsed.y} AU`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
         grid: {
-            color: 'rgba(255,255,255,0.1)'
+          color: 'rgba(255, 255, 255, 0.1)',
+        },
+        ticks: {
+          color: '#d1d5db',
+        },
+        title: {
+          display: true,
+          text: 'Estimated Diameter (km)',
+          color: '#93c5fd',
+        }
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
+        },
+        ticks: {
+          color: '#d1d5db',
+        },
+        title: {
+          display: true,
+          text: 'Closest Approach Distance (AU)',
+          color: '#93c5fd',
         }
       }
     }
@@ -251,7 +257,7 @@ const NEOViewer = ({ onNavigate }) => {
         <p className="error-title">Error!</p>
         <p className="error-text">{error}</p>
         <p className="error-hint">Please check your network connection or try again later.</p>
-        {/* Added mt-8 class here for more space */}
+        
         <button className="home-button mt-8" onClick={() => onNavigate('home')}>
           Back to Home
         </button>
@@ -283,7 +289,7 @@ const NEOViewer = ({ onNavigate }) => {
             className="date-picker-input"
           />
         </div>
-        {/* Added mt-8 class here for more space */}
+        
         <button className="home-button mt-8" onClick={() => onNavigate('home')}>
           Back to Home
         </button>
@@ -325,14 +331,13 @@ const NEOViewer = ({ onNavigate }) => {
         {diameterScatterData && <Scatter data={diameterScatterData} options={diameterScatterOptions} />}
       </div>
 
-      {/* The "Detailed NEO List" section has been removed from here */}
-
-      {/* Added mt-8 class here for more space */}
+      
       <button className="home-button mt-8" onClick={() => onNavigate('home')}>
         Back to Home
       </button>
     </div>
   );
+
 };
 
 export default NEOViewer;

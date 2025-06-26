@@ -1,5 +1,3 @@
-// server.js
-
 require('dotenv').config();
 
 const express = require('express');
@@ -65,20 +63,19 @@ app.get('/api/neows', async (req, res) => {
 
     const { start_date, end_date } = req.query; 
 
+   
+    if (!start_date || !end_date) {
+        return res.status(400).json({ error: 'Both start_date and end_date query parameters are required for NEOs.' });
+    }
+   
+
     try {
-        const params = {
-            api_key: NASA_API_KEY,
-            start_date: start_date,
-            end_date: end_date,
-        };
-        const response = await axios.get(`https://api.nasa.gov/neo/rest/v1/feed`, {
-            params: params
-        });
+        const response = await axios.get(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${start_date}&end_date=${end_date}&api_key=${NASA_API_KEY}`);
         res.json(response.data);
     } catch (error) {
-        console.error('Error fetching NEOWS data:', error.message);
-        const errorMessage = error.response?.data?.message || 'Failed to fetch Near Earth Objects data';
-        res.status(error.response ? error.response.status : 500).json({
+        console.error('Error fetching NEO data:', error.message);
+        const errorMessage = error.response?.data?.error_message || 'Failed to fetch Near Earth Object data';
+        res.status(error.response?.status || 500).json({
             error: errorMessage,
             details: error.message
         });
@@ -109,7 +106,8 @@ app.post('/api/ml_predict', async (req, res) => {
     }
 });
 
-// // NASA Mars Weather API Route (Placeholder)
+
+// NASA Mars Weather API Route (Placeholder) - KEEP COMMENTED OUT unless actively implementing
 // app.get('/api/mars-weather', async (req, res) => {
 //     const NASA_API_KEY = process.env.NASA_API_KEY;
 //     if (!NASA_API_KEY) {
@@ -129,8 +127,12 @@ app.post('/api/ml_predict', async (req, res) => {
 //     }
 // });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Node.js Proxy Server is running on http://localhost:${PORT}`);
-    console.log(`Python ML Backend is expected at ${PYTHON_ML_BACKEND_URL}`);
-});
+
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Node.js Proxy Server is running on http://localhost:${PORT}`);
+        console.log(`Python ML Backend is expected at ${PYTHON_ML_BACKEND_URL}`);
+    });
+}
+
+module.exports = app;

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js", 
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +15,11 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "axios-mock-adapter": "^2.1.0",
+    "jest": "^30.0.3",
+    "nock": "^14.0.5",
+    "supertest": "^7.1.1"
   }
 }

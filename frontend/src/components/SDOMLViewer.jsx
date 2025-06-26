@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -12,18 +11,16 @@ const SDOMLViewer = ({ onNavigate }) => {
   const [loadingArEvolution, setLoadingArEvolution] = useState(false);
   const [arEvolutionError, setArEvolutionError] = useState(null);
 
-  
-  const [magneticFluxChange, setMagneticFluxChange] = useState(0.6); 
-  const [areaChange, setAreaChange] = useState(100);                
-  const [gradientValue, setGradientValue] = useState(0.7);           
-  const BACKEND_URL = 'http://localhost:5000'; 
 
-  
+  const [magneticFluxChange, setMagneticFluxChange] = useState(0.6);
+  const [areaChange, setAreaChange] = useState(100);
+  const [gradientValue, setGradientValue] = useState(0.7);
+  const BACKEND_URL = 'http://localhost:5000';
+
   const fetchGeneralPrediction = async () => {
     setLoadingPrediction(true);
     setPredictionError(null);
     try {
-     
       const response = await axios.get(`${BACKEND_URL}/api/ml_predict`);
       setPredictionData(response.data);
     } catch (err) {
@@ -32,69 +29,68 @@ const SDOMLViewer = ({ onNavigate }) => {
         err.response?.data?.error ||
         'An error occurred while fetching general ML prediction. Please ensure your ML backend is running.'
       );
-      setPredictionData(null);
     } finally {
       setLoadingPrediction(false);
     }
   };
 
- 
   const fetchArEvolution = async () => {
     setLoadingArEvolution(true);
     setArEvolutionError(null);
     try {
-      const response = await axios.get(`${BACKEND_URL}/api/ml_predict_ar_evolution`, {
-        params: {
-          magnetic_flux_change: magneticFluxChange,
-          area_change: areaChange,
-          gradient_value: gradientValue,
-        },
+      const response = await axios.post(`${BACKEND_URL}/api/ml_predict_ar_evolution`, {
+        magnetic_flux_change: magneticFluxChange,
+        area_change: areaChange,
+        gradient_value: gradientValue,
       });
       setArEvolutionData(response.data);
     } catch (err) {
-      console.error('Failed to fetch AR evolution prediction:', err);
+      console.error('Failed to fetch AR evolution classification:', err);
       setArEvolutionError(
         err.response?.data?.error ||
-        'An error occurred while fetching AR evolution. Ensure your ML backend is running and the correct features are provided.'
+        'An error occurred while fetching AR evolution classification. Please ensure your ML backend is running.'
       );
-      setArEvolutionData(null);
     } finally {
       setLoadingArEvolution(false);
     }
   };
 
-  useEffect(() => {
-    
-    fetchGeneralPrediction();
-    fetchArEvolution(); 
-  }, []); 
-
   
   useEffect(() => {
-    
-    if (
-      typeof magneticFluxChange === 'number' &&
-      typeof areaChange === 'number' &&
-      typeof gradientValue === 'number'
-    ) {
-      
-    }
-  }, [magneticFluxChange, areaChange, gradientValue]); 
+    fetchGeneralPrediction();
+    fetchArEvolution();
+  }, []); 
 
 
   return (
-    <div className="sdoml-viewer-content">
-      <h2 className="sdoml-title">SDO Machine Learning for Space Weather Forecasting</h2>
+    <div className="sdoml-viewer-container">
+      <h1 className="sdoml-title">
+        SDO Machine Learning for Space Weather Forecasting
+      </h1>
       <p className="sdoml-intro">
-        The Solar Dynamics Observatory Machine Learning (SDOML) Dataset is a crucial resource for applying machine learning to predict solar flares, Coronal Mass Ejections (CMEs), and Solar Energetic Particle (SEP) events.
-        These events can significantly impact Earth-orbiting satellites, communication systems, and power grids.
+        This section demonstrates machine learning models for solar activity.
       </p>
 
-     
-      <div className="sdoml-section ml-prediction-section">
-        <h3>General ML Prediction (Conceptual)</h3>
-        <button onClick={fetchGeneralPrediction} disabled={loadingPrediction} className="home-button">
-          {loadingPrediction ? 'Loading Prediction...' : 'Fetch Latest General Prediction'}
+      <div
+        class="prediction-section"
+      >
+        <h3>
+          General Solar Flare Prediction
+        </h3>
+        <p>
+          Predicts the general likelihood of solar flares.
+        </p>
+   
+        <button
+          className="home-button"
+          onClick={fetchGeneralPrediction}
+          disabled={loadingPrediction}
+        >
+          {loadingPrediction ? (
+            <span role="progressbar">Fetching...</span>
+          ) : (
+            'Predict General Flare' 
+          )}
         </button>
 
         {predictionError && (
@@ -106,56 +102,69 @@ const SDOMLViewer = ({ onNavigate }) => {
         {predictionData && (
           <div className="prediction-results">
             <p><strong>Status:</strong> {predictionData.prediction}</p>
-            {predictionData.probability !== undefined && (
-              <p><strong>Probability:</strong> {predictionData.probability * 100}%</p>
-            )}
-            {predictionData.timestamp && (
-              <p><strong>As of:</strong> {new Date(predictionData.timestamp).toLocaleString()}</p>
-            )}
-            
+            <p><strong>Probability:</strong> {predictionData.probability * 100}%</p>
+            <p><strong>Timestamp:</strong> {new Date(predictionData.timestamp).toLocaleString()}</p>
           </div>
         )}
       </div>
 
-      
-      <div className="sdoml-section ml-prediction-section">
-        <h3>Active Region Evolution Classification (Conceptual)</h3>
+      <hr
+        class="divider"
+      />
 
-       
-        <div className="feature-inputs">
-          <label>
+      <div
+        class="ar-evolution-section"
+      >
+        <h3>
+          Active Region Evolution Classification
+        </h3>
+        <p>
+          Classifies the predicted evolution of an active region based on input features.
+        </p>
+        <div
+          class="feature-input-group"
+        >
+          <label
+            class="feature-label"
+          >
             Magnetic Flux Change:
             <input
+              class="feature-input"
               type="number"
-              step="0.01"
               value={magneticFluxChange}
-              onChange={(e) => setMagneticFluxChange(parseFloat(e.target.value))}
-              className="feature-input"
+              onChange={(e) => setMagneticFluxChange(e.target.value === '' ? '' : parseFloat(e.target.value))}
             />
           </label>
-          <label>
+          <label
+            class="feature-label"
+          >
             Area Change:
             <input
+              class="feature-input"
               type="number"
               value={areaChange}
-              onChange={(e) => setAreaChange(parseFloat(e.target.value))}
-              className="feature-input"
+              onChange={(e) => setAreaChange(e.target.value === '' ? '' : parseFloat(e.target.value))}
             />
           </label>
-          <label>
+          <label
+            class="feature-label"
+          >
             Gradient Value:
             <input
+              class="feature-input"
               type="number"
-              step="0.01"
               value={gradientValue}
-              onChange={(e) => setGradientValue(parseFloat(e.target.value))}
-              className="feature-input"
+              onChange={(e) => setGradientValue(e.target.value === '' ? '' : parseFloat(e.target.value))}
             />
           </label>
         </div>
 
         <button onClick={fetchArEvolution} disabled={loadingArEvolution} className="home-button">
-          {loadingArEvolution ? 'Classifying...' : 'Classify Active Region Evolution'}
+          {loadingArEvolution ? (
+            <span role="progressbar">Classifying...</span>
+          ) : (
+            'Classify Active Region Evolution'
+          )}
         </button>
 
         {arEvolutionError && (
@@ -173,7 +182,7 @@ const SDOMLViewer = ({ onNavigate }) => {
         )}
       </div>
 
-      
+
       <p className="sdoml-outro">
         Implementing these models typically involves working with large datasets, advanced computational resources, and specialized machine learning frameworks in languages like Python.
       </p>

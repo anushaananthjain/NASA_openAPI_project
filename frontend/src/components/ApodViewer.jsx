@@ -4,7 +4,8 @@ const ApodViewer = ({ loading, error, apodData, onNavigate }) => { // Add onNavi
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="spinner"></div>
+        {/* Added role="progressbar" for accessibility in tests */}
+        <div className="spinner" role="progressbar"></div>
         <p className="loading-text">Loading cosmic data...</p>
       </div>
     );
