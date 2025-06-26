@@ -1,112 +1,77 @@
-# NASA_openAPI_project
-# NASA Astronomy Picture of the Day (APOD) & Space Data Viewer
-
-Welcome to the NASA Astronomy Picture of the Day (APOD) & Space Data Viewer! This application allows you to explore daily astronomical images and information provided by NASA's APOD API, view Near-Earth Objects (NEOs) data from the NeoWs (Near Earth Object Web Service) API, and delve into machine learning predictions and graphs related to solar flare data from the Solar Dynamics Observatory (SDO).
-
----
-
-## Features
-
-### Astronomy Picture of the Day (APOD):
-
-* View NASA's captivating Astronomy Picture of the Day.
-* Select past dates to explore historical APOD entries.
-* Displays image or video content along with the title, explanation, and copyright information.
-
-### Near-Earth Objects (NEO) Viewer:
-
-* Explore data on asteroids and comets that pass close to Earth.
-* Visualize NEO data, including hazardous objects and close approach details.
-
-### Solar Flare ML Prediction:
-
-* See a machine learning model's prediction for solar flare activity based on sample input features.
-
-### Solar Flare ML Graphs:
-
-* View various graphs and visualizations related to the SDO machine learning model, offering insights into the data and model performance.
-
-### Responsive Design:
-
-* Enjoy a seamless experience across various devices and screen sizes.
-
----
-
-## Technologies Used
-
-This project is built using a modern web development stack:
-
-### Frontend:
-
-* **React:** A JavaScript library for building user interfaces.
-* **Axios:** A promise-based HTTP client for making API requests.
-* **Chart.js:** For creating interactive data visualizations (used in NEOViewer).
-
-### Backend (Proxy Server):
-
-* **Node.js:** A JavaScript runtime for server-side logic.
-* **Express.js:** A fast, unopinionated, minimalist web framework for Node.js.
-* **CORS:** Middleware to enable Cross-Origin Resource Sharing.
-* **Axios:** For making requests to external NASA APIs.
-
-### Machine Learning (Integrated via Backend):
-
-* **Python (Flask):** A micro web framework for Python, used to serve the ML model.
-* **Scikit-learn / Pandas / NumPy:** Standard Python libraries for data manipulation and machine learning.
-
----
-
-## Getting Started
-
-Follow these steps to set up and run the project locally on your machine.
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-* **Node.js & npm (or Yarn):** Download [Node.js](https://nodejs.org/) (npm is included with Node.js).
-* **Python 3.x & pip:** Download [Python](https://www.python.org/downloads/).
-* **NASA API Key:** Obtain a free API key from the [NASA API website](https://api.nasa.gov/). This key is essential for accessing the APOD and NeoWs data.
-
-### Installation
-
-1.  **Clone the Repository:**
-
-    ```bash
-    git clone <your-repository-url>
-    cd <your-repository-directory>
-    ```
-
-2.  **Backend Setup (Node.js Proxy):**
-
-    Navigate to your backend directory (e.g., `backend/` or `server/`).
-
-    ```bash
-    cd path/to/your/backend
-    npm install
-    ```
-
-    Create a `.env` file in your backend directory and add your NASA API key:
-
-    ```
-    NASA_API_KEY=YOUR_NASA_API_KEY_HERE
-    ```
-
-    Replace `YOUR_NASA_API_KEY_HERE` with the actual key you obtained.
-
-3.  **Frontend Setup (React App):**
-
-    Navigate to your frontend directory (e.g., `frontend/` or `client/`).
-
-    ```bash
-    cd path/to/your/frontend
-    npm install
-    ```
-
-4.  **Machine Learning Backend Setup (Python Flask):**
-
-    Navigate to your Python ML backend directory (e.g., `ml-backend/`).
-
-    ```bash
-    cd path/to/your/ml-backend
-    pip install -r requirements.txt # Ensure you have a requirements.txt
+NASA Astronomy App with ML IntegrationThis project is a web application that integrates various NASA APIs, including the Astronomy Picture of the Day (APOD) and Near Earth Object Web Service (NEOWS). It also features a machine learning (ML) backend for predicting solar flare peak times, and a module for active region evolution classification.The application is structured into a React frontend, a Node.js proxy backend, and a Python ML backend.Table of ContentsFeaturesProject StructureSetup and InstallationPrerequisitesEnvironment VariablesBackend Setup (Node.js Proxy)ML Backend Setup (Python)Frontend Setup (React)UsageAPI EndpointsMachine Learning ModelContributingLicenseFeaturesAstronomy Picture of the Day (APOD): View the APOD for a selected date.Near Earth Object Web Service (NEOWS): Browse information about Near-Earth Objects. (Note: The frontend currently only has a placeholder for this.)Solar Flare Peak Time Prediction: Predict the peak time offset of solar flares using a trained LSTM model.Active Region Evolution Classification: Classify the evolution of active regions based on input features. (Note: This is an additional ML endpoint provided by the Python backend.)Interactive UI: A user-friendly interface built with React.Proxy Backend: A Node.js backend to handle API requests and proxy ML predictions, enhancing security and flexibility.ML Model Training and Plotting: Python script for training the LSTM model and generating insightful plots of model performance.Project Structure.
+├── frontend/                  # React.js frontend application
+│   ├── public/
+│   ├── src/
+│   │   ├── components/        # Reusable React components (Header, Footer, DatePicker, Viewers)
+│   │   ├── App.css            # Main CSS for the React app
+│   │   └── App.jsx            # Main React application component
+│   └── index.html
+├── backend/                   # Node.js Express proxy server
+│   ├── server.js              # Node.js server to proxy requests to NASA and ML backends
+│   └── .env.example           # Example environment variables for Node.js backend
+├── ml_backend/                # Python Flask ML backend
+│   ├── ml_backend_server.py   # Flask server for ML predictions
+│   ├── ml_model.py            # Python script for ML model training, evaluation, and saving
+│   ├── solar_flare_dataset.csv # Example dataset for ML model training (assumed to be here)
+│   ├── solar_flare_peak_time_predictor_lstm_model.h5 # Trained LSTM model (generated by ml_model.py)
+│   ├── scaler_X.pkl           # Scaler for input features (generated by ml_model.py)
+│   ├── scaler_y.pkl           # Scaler for target variable (generated by ml_model.py)
+│   └── public/                # Directory for plots generated by ml_model.py
+│       └── plots/
+└── README.md
+Setup and InstallationPrerequisitesBefore you begin, ensure you have the following installed:Node.js (LTS version recommended) and npm or YarnPython 3.8+pip (Python package installer)Environment VariablesBoth the Node.js backend and the React frontend require environment variables.Create .env files:In the backend/ directory, create a file named .env.In the frontend/ directory, create a file named .env. (Note: For Vite, it's typically .env or .env.local in the project root, but the App.jsx indicates import.meta.env.VITE_APP_API_URL which is usually picked from the root of the Vite project or explicitly in frontend/.env).Populate .env for Node.js Backend (backend/.env):NASA_API_KEY=YOUR_NASA_API_KEY_HERE
+ML_API_BASE_URL=http://localhost:5001 # Or the URL where your Python ML backend will run
+PORT=5000 # Or any preferred port for the Node.js server
+Obtain your NASA_API_KEY from NASA API website.Populate .env for React Frontend (frontend/.env):VITE_APP_API_URL=http://localhost:5000 # Or the URL where your Node.js proxy backend will run
+Backend Setup (Node.js Proxy)Navigate to the backend directory:cd backend
+Install dependencies:npm install
+# or
+yarn install
+Start the Node.js proxy server:npm start
+# or
+node server.js
+The server will typically run on http://localhost:5000 (or the PORT specified in your .env).ML Backend Setup (Python)Navigate to the ml_backend directory:cd ml_backend
+Install Python dependencies:pip install -r requirements.txt
+(If requirements.txt is not provided, you'll need to install them manually. Based on the ml_model.py and ml_backend_server.py files, the likely dependencies are flask, flask-cors, numpy, pandas, scikit-learn, tensorflow, matplotlib, seaborn, joblib.)Example requirements.txt content:Flask
+Flask-Cors
+numpy
+pandas
+scikit-learn
+tensorflow
+matplotlib
+seaborn
+joblib
+Train the ML Model (Optional but recommended for fresh setup):First, ensure you have the solar_flare_dataset.csv file in the ml_backend directory. If not, you'll need to provide one that matches the expected format in ml_model.py.python ml_model.py
+This script will:Load and preprocess the solar_flare_dataset.csv.Train the LSTM model.Evaluate the model.Save the trained model as solar_flare_peak_time_predictor_lstm_model.h5.Save the scalers as scaler_X.pkl and scaler_y.pkl.Generate and save plots to public/plots/.Start the Python ML backend server:python ml_backend_server.py
+The ML server will typically run on http://localhost:5001.Frontend Setup (React)Navigate to the frontend directory:cd frontend
+Install dependencies:npm install
+# or
+yarn install
+Start the React development server:npm run dev
+# or
+yarn dev
+The frontend will typically open in your browser at http://localhost:5173.UsageEnsure both the Node.js proxy server and the Python ML backend server are running.Open your web browser and navigate to the frontend URL (e.g., http://localhost:5173).Use the navigation options to explore:Home Page: Provides navigation links.APOD: Select a date to view the Astronomy Picture of the Day.ML Prediction: This section will display a hardcoded example prediction from the ML backend. (The current App.jsx sends a fixed set of parameters).ML Graphs: This section is intended to display the plots generated by ml_model.py. (The current implementation in App.jsx points to MLGraphsViewer but the actual rendering of plots would need to be implemented within that component, fetching images from the Node.js proxy /plots/:filename endpoint).NEOWS: This section is a placeholder in the provided frontend.API EndpointsNode.js Proxy Backend (backend/server.js)GET /api/apod?date=<YYYY-MM-DD>: Fetches the Astronomy Picture of the Day for the specified date from NASA's API.GET /api/neows?start_date=<YYYY-MM-DD>&end_date=<YYYY-MM-DD>: Fetches Near-Earth Object data for the specified date range from NASA's API.POST /api/ml_predict: Proxies a prediction request to the Python ML backend.Request Body (JSON):{
+    "total_counts": 50000,
+    "x_pos_asec": 100,
+    "y_pos_asec": -200,
+    "start_hour": 21,
+    "start_minute": 29,
+    "start_second": 56,
+    "end_hour": 21,
+    "end_minute": 41,
+    "end_second": 48
+}
+Response Body (JSON): Contains the prediction results from the Python backend.GET /plots/:filename: Proxies requests to fetch plot images from the Python ML backend's public/plots directory.Python ML Backend (ml_backend/ml_backend_server.py)POST /api/ml_predict: Accepts input features for solar flare peak time prediction.Request Body (JSON): Same as the Node.js /api/ml_predict endpoint.Response Body (JSON):{
+    "prediction": 1234.56,              // Predicted offset in seconds
+    "prediction_formatted_offset": "HH:MM:SS", // Formatted offset
+    "predicted_peak_time": "HH:MM:SS",     // Predicted absolute peak time
+    "input_data": { ... },             // The input data received
+    "timestamp": "YYYY-MM-DDTHH:MM:SSZ" // Timestamp of the prediction
+}
+GET /api/classify_ar_evolution: (Additional endpoint) Classifies active region evolution based on query parameters.Query Parameters: magnetic_flux_change, area_change, gradient_value (all float).Response Body (JSON):{
+    "success": true,
+    "active_region_id": "AR-dynamic",
+    "predicted_evolution": 0.X, // A numerical prediction, exact meaning depends on model output
+    "timestamp": "YYYY-MM-DDTHH:MM:SSZ"
+}
+GET /plots/<filename>: Serves static plot image files from the public/plots directory.Machine Learning ModelThe core of the ML prediction is an LSTM (Long Short-Term Memory) neural network.Model File: solar_flare_peak_time_predictor_lstm_model.h5Scalers: scaler_X.pkl (for input features) and scaler_y.pkl (for target variable) are used to normalize and denormalize data.Features: The model uses features such as flare duration, total counts, spatial position (x.pos.asec, y.pos.asec), and cyclical time features (sine/cosine transformations of start/end hours and minutes).Target: The model predicts the peak offset in seconds from the flare's start time.The ml_model.py script handles:Data loading and preprocessing.Feature engineering, including the calculation of duration.s and the addition of cyclical time features.MinMaxScaler application for feature and target scaling.Splitting data into training and testing sets.Building and training the LSTM model with EarlyStopping for regularization.Model evaluation (Loss, MAE in scaled and original units).Saving the trained model and scalers.Generating and saving plots (training history, actual vs. predicted, residuals) to the public/plots directory.ContributingFork the repository.Create your feature branch (git checkout -b feature/AmazingFeature).Commit your changes (git commit -m 'Add some AmazingFeature').Push to the branch (git push origin feature/AmazingFeature).Open a Pull Request.License(Specify your chosen license here, e.g., MIT, Apache 2.0, etc.)
