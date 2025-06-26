@@ -24,7 +24,8 @@ if (!PYTHON_ML_BACKEND_URL) {
 
 
 app.use(cors({
-    origin: 'https://nasa-react-frontend.vercel.app', 
+    // origin: 'https://nasa-react-frontend.vercel.app', 
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
