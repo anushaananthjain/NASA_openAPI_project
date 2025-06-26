@@ -23,8 +23,13 @@ function App() {
   const [mlPredictionLoading, setMlPredictionLoading] = useState(false);
   const [mlPredictionError, setMlPredictionError] = useState(null);
 
-  const BACKEND_URL = 'http://localhost:5000';
-
+  // const BACKEND_URL = 'http://localhost:5000';
+  const BACKEND_URL = import.meta.env.VITE_APP_API_URL;
+  if (!BACKEND_URL) {
+    console.error("CRITICAL FRONTEND ERROR: VITE_APP_API_URL is not set!");
+  } else {
+      console.log("Frontend API URL set to:", BACKEND_URL);
+  }
   useEffect(() => {
     // Only fetch APOD data if the current page is 'apod'
     if (currentPage === 'apod') {
