@@ -6,6 +6,13 @@ const cors = require('cors');
 const path = require('path'); 
 
 const app = express();
+
+console.log("--- DEBUGGING ENVIRONMENT VARIABLES ---");
+console.log("process.env.ML_API_BASE_URL:", process.env.ML_API_BASE_URL);
+console.log("process.env.NASA_API_KEY:", process.env.NASA_API_KEY ? "SET" : "NOT SET");
+console.log("process.env.PORT:", process.env.PORT);
+console.log("-------------------------------------");
+
 const PORT = process.env.PORT || 5000;
 // const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL || 'http://localhost:5001'; 
 // const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL; 
