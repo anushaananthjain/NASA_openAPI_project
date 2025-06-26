@@ -32,7 +32,13 @@ const NEOViewer = ({ onNavigate }) => {
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
 
 
-  const BACKEND_URL = 'http://localhost:5000';
+  // const BACKEND_URL = 'http://localhost:5000';
+  const BACKEND_URL = import.meta.env.VITE_APP_API_URL;
+  if (!BACKEND_URL) {
+      console.error("CRITICAL FRONTEND ERROR: VITE_APP_API_URL is not set in NEOViewer!");
+  } else {
+      console.log("NEOViewer API URL set to:", BACKEND_URL);
+  }
 
   useEffect(() => {
     const fetchNeoData = async () => {

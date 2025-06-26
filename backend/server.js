@@ -23,21 +23,21 @@ if (!PYTHON_ML_BACKEND_URL) {
 
 
 
-// app.use(cors({
-//     // origin: 'https://nasa-react-frontend.vercel.app', 
-//     origin: '*',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization']
-// }));
-
 app.use(cors({
-    origin: [
-        'https://nasa-react-frontend.vercel.app', 
-        'https://nasa-react-frontend-6z8ti51ko-anusha-ananths-projects.vercel.app' 
-    ],
+    // origin: 'https://nasa-react-frontend.vercel.app', 
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// app.use(cors({
+//     origin: [
+//         'https://nasa-react-frontend.vercel.app', 
+//         'https://nasa-react-frontend-6z8ti51ko-anusha-ananths-projects.vercel.app' 
+//     ],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+// }));
 
 app.use(express.json());
 

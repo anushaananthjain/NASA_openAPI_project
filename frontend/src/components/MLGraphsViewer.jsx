@@ -1,7 +1,13 @@
 import React from 'react';
 
 const MLGraphsViewer = ({ onNavigate }) => {
-  const BASE_IMG_URL = 'http://localhost:5000/plots/'; 
+  // const BASE_IMG_URL = 'http://localhost:5000/plots/'; 
+  const BASE_IMG_URL = `${import.meta.env.VITE_APP_API_URL}/plots/`;
+  if (!BASE_IMG_URL) {
+      console.error("CRITICAL FRONTEND ERROR: VITE_APP_API_URL is not set for image plots in MLGraphsViewer!");
+  } else {
+      console.log("MLGraphsViewer Image Base URL set to:", BASE_IMG_URL);
+  }
 
   const graphData = [
     {
