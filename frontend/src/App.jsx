@@ -12,6 +12,7 @@ import MLGraphsViewer from './components/MLGraphsViewer';
 import './App.css';
 
 function App() {
+  console.log("VITE_APP_API_URL directly from import.meta.env:", import.meta.env.VITE_APP_API_URL);
   const [apodData, setApodData] = useState(null);
   const [apodLoading, setApodLoading] = useState(true);
   const [apodError, setApodError] = useState(null);
@@ -30,7 +31,7 @@ function App() {
   } else {
       console.log("Frontend API URL set to:", BACKEND_URL);
   }
-  
+
   useEffect(() => {
     // Only fetch APOD data if the current page is 'apod'
     if (currentPage === 'apod') {
