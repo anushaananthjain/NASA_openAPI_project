@@ -14,9 +14,7 @@ console.log("process.env.PORT:", process.env.PORT);
 console.log("-------------------------------------");
 
 const PORT = process.env.PORT || 5000;
-// const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL || 'http://localhost:5001'; 
-// const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL; 
-const PYTHON_ML_BACKEND_URL = process.env.ML_API_BASE_URL; // Use the new name
+const PYTHON_ML_BACKEND_URL = process.env.ML_API_BASE_URL; 
 if (!PYTHON_ML_BACKEND_URL) {
     console.error("CRITICAL ERROR: ML_API_BASE_URL environment variable is not set!");
 }
@@ -24,20 +22,12 @@ if (!PYTHON_ML_BACKEND_URL) {
 
 
 app.use(cors({
-    // origin: 'https://nasa-react-frontend.vercel.app', 
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// app.use(cors({
-//     origin: [
-//         'https://nasa-react-frontend.vercel.app', 
-//         'https://nasa-react-frontend-6z8ti51ko-anusha-ananths-projects.vercel.app' 
-//     ],
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization']
-// }));
+
 
 app.use(express.json());
 
@@ -48,71 +38,62 @@ app.get('/', (req, res) => {
     res.send('NASA Explorer Backend (Node.js Proxy) is running!');
 });
 
+app.get('/api/apod', async (req, res) => {
+    try {
+        const { date } = req.query; 
+        let apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`;
+
+        
+        if (date) {
+            apiUrl += `&date=${date}`;
+        }
+
+        const response = await axios.get(apiUrl);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching APOD:', error.message);
+        res.status(error.response?.status || 500).json({ error: 'Failed to fetch APOD data.' });
+    }
+});
+
 
 // app.get('/api/apod', async (req, res) => {
 //     const NASA_API_KEY = process.env.NASA_API_KEY;
 //     if (!NASA_API_KEY) {
+//         console.error('Node.js Backend: NASA API Key is NOT SET (internally)');
 //         return res.status(500).json({ error: 'NASA API Key not configured in .env' });
 //     }
 
-//     const { date } = req.query; 
+//     const { date } = req.query;
 
 //     try {
+//         console.log(`Node.js Backend: Attempting to fetch APOD for date: ${date || 'today'} with API Key status: ${NASA_API_KEY ? 'SET' : 'NOT SET'}`);
 //         const params = {
 //             api_key: NASA_API_KEY,
 //         };
 //         if (date) {
-//             params.date = date; 
+//             params.date = date;
 //         }
 //         const response = await axios.get(`https://api.nasa.gov/planetary/apod`, { params });
+//         console.log("Node.js Backend: Successfully fetched APOD data from NASA API.");
 //         res.json(response.data);
 //     } catch (error) {
-//         console.error('Error fetching APOD:', error.message);
-//         const errorMessage = error.response?.data?.msg || 'Failed to fetch Astronomy Picture of the Day';
+//         console.error('Node.js Backend Error fetching APOD:', error.message);
+//         if (error.response) {
+//             console.error('Node.js Backend: NASA API response error status:', error.response.status);
+//             console.error('Node.js Backend: NASA API response error data:', error.response.data);
+//         } else if (error.request) {
+//             console.error('Node.js Backend: No response received from NASA API. Request details:', error.request);
+//         } else {
+//             console.error('Node.js Backend: Error setting up request to NASA API:', error.message);
+//         }
+//         const errorMessage = error.response?.data?.msg || 'Failed to fetch Astronomy Picture of the Day from NASA API (proxy error)';
 //         res.status(error.response ? error.response.status : 500).json({
 //             error: errorMessage,
 //             details: error.message
 //         });
 //     }
 // });
-
-app.get('/api/apod', async (req, res) => {
-    const NASA_API_KEY = process.env.NASA_API_KEY;
-    if (!NASA_API_KEY) {
-        console.error('Node.js Backend: NASA API Key is NOT SET (internally)');
-        return res.status(500).json({ error: 'NASA API Key not configured in .env' });
-    }
-
-    const { date } = req.query;
-
-    try {
-        console.log(`Node.js Backend: Attempting to fetch APOD for date: ${date || 'today'} with API Key status: ${NASA_API_KEY ? 'SET' : 'NOT SET'}`);
-        const params = {
-            api_key: NASA_API_KEY,
-        };
-        if (date) {
-            params.date = date;
-        }
-        const response = await axios.get(`https://api.nasa.gov/planetary/apod`, { params });
-        console.log("Node.js Backend: Successfully fetched APOD data from NASA API.");
-        res.json(response.data);
-    } catch (error) {
-        console.error('Node.js Backend Error fetching APOD:', error.message);
-        if (error.response) {
-            console.error('Node.js Backend: NASA API response error status:', error.response.status);
-            console.error('Node.js Backend: NASA API response error data:', error.response.data);
-        } else if (error.request) {
-            console.error('Node.js Backend: No response received from NASA API. Request details:', error.request);
-        } else {
-            console.error('Node.js Backend: Error setting up request to NASA API:', error.message);
-        }
-        const errorMessage = error.response?.data?.msg || 'Failed to fetch Astronomy Picture of the Day from NASA API (proxy error)';
-        res.status(error.response ? error.response.status : 500).json({
-            error: errorMessage,
-            details: error.message
-        });
-    }
-});
 
 app.get('/api/neows', async (req, res) => {
     const NASA_API_KEY = process.env.NASA_API_KEY;
