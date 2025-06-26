@@ -8,10 +8,12 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 // const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL || 'http://localhost:5001'; 
-const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL; 
+// const PYTHON_ML_BACKEND_URL = process.env.PYTHON_ML_BACKEND_URL; 
+const PYTHON_ML_BACKEND_URL = process.env.ML_API_BASE_URL; // Use the new name
 if (!PYTHON_ML_BACKEND_URL) {
-    console.error("CRITICAL ERROR: PYTHON_ML_BACKEND_URL environment variable is not set!");
+    console.error("CRITICAL ERROR: ML_API_BASE_URL environment variable is not set!");
 }
+
 
 
 app.use(cors({
