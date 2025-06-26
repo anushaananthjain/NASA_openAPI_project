@@ -30,6 +30,7 @@ function App() {
   } else {
       console.log("Frontend API URL set to:", BACKEND_URL);
   }
+  
   useEffect(() => {
     // Only fetch APOD data if the current page is 'apod'
     if (currentPage === 'apod') {
