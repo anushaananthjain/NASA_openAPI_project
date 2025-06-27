@@ -1,5 +1,4 @@
-// require('dotenv').config();
-
+// require('dotenv').config(); 
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
@@ -26,7 +25,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-
 app.use(express.json());
 
 
@@ -42,7 +40,7 @@ app.get('/api/apod', async (req, res) => {
     
     const NASA_API_KEY = process.env.NASA_API_KEY;
 
-   
+  
     if (!NASA_API_KEY) {
         console.error('Error fetching APOD: NASA_API_KEY is not defined in the environment.');
         return res.status(500).json({ error: 'NASA API Key not configured in the server environment.' });
@@ -52,16 +50,20 @@ app.get('/api/apod', async (req, res) => {
         const { date } = req.query; 
         let apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`;
 
-    
+      
         if (date) {
             apiUrl += `&date=${date}`;
         }
 
         const response = await axios.get(apiUrl);
-        res.json(response.data);
+        res.json(response.data); 
     } catch (error) {
-      
+       
         console.error('Error fetching APOD:', error.message);
+
+        if (error.response) {
+            console.error('NASA APOD API response error data:', error.response.data);
+        }
         res.status(error.response?.status || 500).json({ error: 'Failed to fetch APOD data.' });
     }
 });
@@ -75,18 +77,29 @@ app.get('/api/neows', async (req, res) => {
 
     const { start_date, end_date } = req.query; 
 
- 
+   
     if (!start_date || !end_date) {
         return res.status(400).json({ error: 'Both start_date and end_date query parameters are required for NEOs.' });
     }
 
+  
+
     try {
-   
         const response = await axios.get(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${start_date}&end_date=${end_date}&api_key=${NASA_API_KEY}`);
         res.json(response.data);
     } catch (error) {
-      
+       
         console.error('Error fetching NEO data:', error.message);
+        
+        if (error.response) {
+            console.error('NASA NEO API response error status:', error.response.status);
+            console.error('NASA NEO API response error data:', error.response.data);
+        } else if (error.request) {
+            console.error('No response received from NASA NEO API. Request details:', error.request);
+        } else {
+            console.error('Error setting up request to NASA NEO API:', error.message);
+        }
+
         const errorMessage = error.response?.data?.error_message || 'Failed to fetch Near Earth Object data';
         res.status(error.response?.status || 500).json({
             error: errorMessage,
@@ -98,13 +111,14 @@ app.get('/api/neows', async (req, res) => {
 
 app.post('/api/ml_predict', async (req, res) => {
     try {
+      
         const response = await axios.post(`${PYTHON_ML_BACKEND_URL}/api/ml_predict`, req.body);
         res.json(response.data); 
     } catch (error) {
-    
+       
         console.error('Error proxying ML prediction request to Python backend:', error.message);
         if (error.response) {
-         
+     
             console.error('Python backend response error:', error.response.data);
             res.status(error.response.status).json({
                 error: error.response.data.error || 'Failed to get general ML prediction from backend.',
@@ -121,7 +135,6 @@ app.post('/api/ml_predict', async (req, res) => {
 });
 
 
-
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Node.js Proxy Server is running on http://localhost:${PORT}`);
@@ -129,4 +142,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = app; 
+module.exports = app;
